@@ -50,11 +50,17 @@ class db_access():
             try:
                 fetched_data = cursor.fetchone()
             except:
-                logging.warning(f'')
+                logging.warning(f"db fetch one query: '{query}' with values: '{values}' failed")
         elif fetch_many:
-            fetched_data = cursor.fetchmany()
+            try:
+                fetched_data = cursor.fetchmany()
+            except:
+                logging.warning(f"db fetch many query: '{query}' with values: '{values}' failed")
         elif fetch_all:
-            fetched_data = cursor.fetchall()
+            try:
+                fetched_data = cursor.fetchall()
+            except:
+                logging.warning(f"db fetch all query: '{query}' with values: '{values}' failed")
         else:
             raise TypeError("no fetch type was defined")
         conn.commit()
