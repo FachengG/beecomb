@@ -2,6 +2,9 @@ from typing import Any, List, Tuple
 import psycopg
 from uuid import UUID, uuid4
 from utils.utils import get_current_time_str
+import logging
+
+logging.basicConfig(filename='../log/db.log')
 
 class db_access():
     def __init__(self) -> None:
@@ -31,16 +34,23 @@ class db_access():
     def execute(self, query: str, values: Tuple = ()) -> None:
         conn = self.connection()
         cursor = conn.cursor()
-        cursor.execute(query,values)
+        try:
+            cursor.execute(query,values)
+        except:
+            logging.warning(f"db execute query: '{query}' with values: '{values}' failed")
         conn.commit()
         conn.close()
+        return True
 
     def fetch(self, query: str, values: Tuple = (), fetch_one:bool = False, fetch_many:bool = False, fetch_all:bool = False) -> None:
         conn = self.connection()
         cursor = conn.cursor()
         cursor.execute(query,values)
         if fetch_one:
-            fetched_data = cursor.fetchone()
+            try:
+                fetched_data = cursor.fetchone()
+            except:
+                logging.warning(f'')
         elif fetch_many:
             fetched_data = cursor.fetchmany()
         elif fetch_all:
