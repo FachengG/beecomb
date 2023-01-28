@@ -3,11 +3,21 @@ import psycopg
 from uuid import UUID, uuid4
 from utils.utils import get_current_time_str
 
-class Task_manager_db():
+class db_access():
     def __init__(self) -> None:
+        self.db_access = None
         pass
-    
-    ## Base Functions
+
+    def __enter__(self):
+        self.db_access = self.connection()
+        return self.db_access
+         
+    def __exit__(self, exc_type, exc_value, exc_traceback):
+        if self.db_access:
+            self.db_access.commit()
+            self.db_access.close()
+            self.db_access = None
+
     def connection(self) -> psycopg.connect:
         connection = psycopg.connect(
             dbname="task_manager",
@@ -40,43 +50,3 @@ class Task_manager_db():
         conn.commit()
         conn.close()
         return fetched_data
-    
-
-    # Context.py related functions
-    # TODO:
-    def get_pause_status(self,task_uuid: UUID) -> bool:
-        return
-    
-    def set_task_status_to_pause(self,task_uuid: UUID) -> bool:
-        return
-
-    def get_cancel_signal(self,task_uuid: UUID) -> bool:
-        return
-    
-    def update_heartbeat(self,task_uuid: UUID) -> bool:
-        cur_time_str = get_current_time_str()
-        query = f"UPDATE tasks SET heartbeat = %s, WHERE task_uuid = %s ;"
-        self.execute(query,(cur_time_str,task_uuid,))
-
-    def update_history(self,task_uuid: UUID, most_recent_call_function_name: str) -> bool:
-        return
-
-    def check_is_task_done(self,task_uuid: UUID) -> bool:
-        return
-
-    def get_task_by_uuid(self,task_uuid) -> Any:
-        query = f"SELECT * FROM tasks WHERE task_uuid = %s;"
-        
-        task_info = self.fetch(query,(task_uuid,),fetch_all=True)
-        if not task_info:
-            raise ValueError(f'failed to catch task info for task_uuid: {task_uuid}')
-        return task_info
-    
-
-
-    # Initial.py related functions
-    def create_tasks_table(self):
-        query = "CREATE TABLE IF NOT EXISTS tasks(task_uuid uuid PRIMARY KEY, function TEXT, argument TEXT, status TEXT, start_time TEXT, expire_time TEXT,remaining_attempts int, failure_attempt_policy INT[], success_attempt_policy INT[], last_attempt_time TEXT, heartbeat TEXT, create_time TEXT, finished_time TEXT, cancel_signal bool, pause_signal bool);"
-        self.execute(query)
-
-
