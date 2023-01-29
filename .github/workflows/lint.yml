@@ -1,4 +1,4 @@
-name: Python package
+name: lint with flake8
 
 on: [push]
 
