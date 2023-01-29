@@ -1,7 +1,7 @@
 from typing import Any, List, Tuple
 import psycopg
 from uuid import UUID, uuid4
-from utils.utils import get_current_time_str
+from utils import get_current_time_str
 
 
 class Task_manager_db():
