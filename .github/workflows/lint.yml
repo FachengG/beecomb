@@ -1,9 +1,9 @@
-name: lint with flake8
+name: Lint
 
 on: [push]
 
 jobs:
-  lint_workflow:
+  lint_with_flake8_workflow:
     runs-on: ubuntu-latest
 
     steps:
