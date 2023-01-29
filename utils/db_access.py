@@ -1,8 +1,9 @@
 from typing import Any, List, Tuple
 import psycopg
 from uuid import UUID, uuid4
-from utils.utils import get_current_time_str
 import logging
+from utils import get_current_time_str
+
 
 logging.basicConfig(filename='../log/db.log')
 
@@ -42,10 +43,10 @@ class db_access():
         conn.close()
         return True
 
-    def fetch(self, query: str, values: Tuple = (), fetch_one:bool = False, fetch_many:bool = False, fetch_all:bool = False) -> None:
+    def fetch(self, query: str, values: Tuple = (), fetch_one: bool = False, fetch_many: bool = False, fetch_all: bool = False) -> None:
         conn = self.connection()
         cursor = conn.cursor()
-        cursor.execute(query,values)
+        cursor.execute(query, values)
         if fetch_one:
             try:
                 fetched_data = cursor.fetchone()
@@ -65,4 +66,5 @@ class db_access():
             raise TypeError("no fetch type was defined")
         conn.commit()
         conn.close()
+
         return fetched_data
