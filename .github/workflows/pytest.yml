@@ -34,6 +34,6 @@ jobs:
 
       - name: Test with pytest
         run: |
-          pytest
+          python -m pytest
         env:
           CI_DB_URL: postgresql://pi:pi@localhost:5432/test_task_manager
