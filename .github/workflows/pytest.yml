@@ -18,11 +18,11 @@ jobs:
           pip install -r requirements.txt
       - name: Install database
         run: |
-            sudo apt install --yes --no-install-recommends postgresql postgresql-contrib
-            sudo systemctl start postgresql.service
-            psql -h postgres -U postgres -c "CREATE USER pi WITH PASSWORD 'pi';"
-            psql -h postgres -U postgres -c " CREATE DATABASE test_task_manager;"
-            psql -h postgres -U postgres -c " GRANT ALL on test_task_manager to pi;"
+          sudo apt install --yes --no-install-recommends postgresql postgresql-contrib
+          sudo systemctl start postgresql.service
+          psql -h localhost -U postgres -c "CREATE USER pi WITH PASSWORD 'pi';"
+          psql -h localhost -U postgres -c " CREATE DATABASE test_task_manager;"
+          psql -h localhost -U postgres -c " GRANT ALL on test_task_manager to pi;"
       - name: Test with pytest
         run: |
           pytest
