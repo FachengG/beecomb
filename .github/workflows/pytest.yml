@@ -20,6 +20,8 @@ jobs:
         run: |
             sudo apt install postgresql postgresql-contrib
             sudo systemctl start postgresql.service
+            sudo su postgres
+            psql
       - name: Test with pytest
         run: |
           pytest
