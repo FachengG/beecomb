@@ -1,10 +1,9 @@
-name: pytest
+name: Functions Tests
 
 on: [push]
 
 jobs:
-  build:
-
+  pytest_workflow:
     runs-on: ubuntu-latest
 
     steps:
