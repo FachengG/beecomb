@@ -22,6 +22,11 @@ jobs:
             sudo systemctl start postgresql.service
             sudo su postgres
             psql
+            CREATE USER pi WITH PASSWORD 'pi';
+            CREATE DATABASE test_task_manager;
+            GRANT ALL on test_task_manager to pi;
+            \q
+            exit
       - name: Test with pytest
         run: |
           pytest
