@@ -26,7 +26,7 @@ def update_history(self,task_uuid: UUID, most_recent_call_function_name: str) ->
     return
 def check_is_task_done(self,task_uuid: UUID) -> bool:
     return
-def get_task_by_uuid(self,task_uuid) -> Any:
+def get_task_by_uuid(self,task_uuid) -> any:
     query = f"SELECT * FROM tasks WHERE task_uuid = %s;"
     
     task_info = self.fetch(query,(task_uuid,),fetch_all=True)
