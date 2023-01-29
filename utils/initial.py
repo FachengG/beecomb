@@ -1,4 +1,4 @@
-import utils.db_access as db_access
+from db_access import db
 
 # initial database
 initial_db = db_access.Task_manager_db()

@@ -2,25 +2,25 @@ from typing import Any, List, Tuple
 import psycopg
 from uuid import UUID, uuid4
 import logging
-from utils.utils import get_current_time_str
+from utils import get_current_time_str
 
 
 logging.basicConfig(filename='../log/db.log')
 
 class db():
     def __init__(self) -> None:
-        self.db_access = None
+        self.db_connection = None
         pass
 
     def __enter__(self):
-        self.db_access = self.connection()
-        return self.db_access
+        self.db_connection = self.connection()
+        return self.db_connection
          
     def __exit__(self, exc_type, exc_value, exc_traceback):
-        if self.db_access:
-            self.db_access.commit()
-            self.db_access.close()
-            self.db_access = None
+        if self.db_connection:
+            self.db_connection.commit()
+            self.db_connection.close()
+            self.db_connection = None
 
     def connection(self) -> psycopg.connect:
         connection = psycopg.connect(
