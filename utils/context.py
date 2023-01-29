@@ -1,12 +1,12 @@
 import inspect
 from time import sleep
-from utils.db_access import db
+from utils.db_access import Db
 from uuid import UUID
 
 
 class Context:
     def __init__(self, task_uuid: UUID) -> None:
-        self.db = db()
+        self.db = Db()
         self.task_uuid = task_uuid
 
     def __call__(self):

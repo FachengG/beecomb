@@ -8,7 +8,7 @@ from utils.utils import get_current_time_str
 logging.basicConfig(filename='../log/db.log')
 
 
-class db():
+class Db():
     def __init__(self, test: bool = False) -> None:
         self.db_connection = None
         self.test = test
