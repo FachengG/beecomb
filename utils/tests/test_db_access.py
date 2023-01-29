@@ -1,2 +1,5 @@
-def test_task_manager_db():
-    assert 1 == 1
+from ..db_access import db
+
+def test_db():
+    return 5
+    

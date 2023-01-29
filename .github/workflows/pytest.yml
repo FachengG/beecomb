@@ -15,8 +15,11 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest psycopg
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install -r requirements.txt
+      - name: Install database
+        run: |
+            sudo apt install postgresql postgresql-contrib
+            sudo systemctl start postgresql.service
       - name: Test with pytest
         run: |
           pytest
