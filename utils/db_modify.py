@@ -1,13 +1,10 @@
-from db_access import db
-from utils.db_access import db
+from utils.db_access import Db
 from uuid import UUID
 import logging
 from utils.utils import get_current_time_str
 
 logging.basicConfig(filename='db.log', encoding='utf-8', level=logging.DEBUG)
 
-# Context.py related functions
-# TODO:
 def get_pause_status(self,task_uuid: UUID) -> bool:
     return
 
@@ -35,10 +32,6 @@ def get_task_by_uuid(self,task_uuid) -> any:
 # Initial.py related functions
 def create_tasks_table(self):
     query = "CREATE TABLE IF NOT EXISTS tasks(task_uuid uuid PRIMARY KEY, function TEXT, argument TEXT, status TEXT, start_time TEXT,expire_time TEXT,remaining_attempts int, failure_attempt_policy INT[], success_attempt_policy INT[], last_attempt_time TEXT,heartbeat TEXT, create_time TEXT, finished_time TEXT, cancel_signal bool, pause_signal bool);"
-    if db().execute(query) != True :
-        logging.warning('db initialization failed')
-        exit()
-    print('db initialization failed')
-    exit()
+    Db().execute(query)
 
 

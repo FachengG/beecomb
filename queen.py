@@ -1,4 +1,4 @@
-from utils.db_access import Task_manager_db
+from utils.db_access import db
 from uuid import uuid4
 from bee import Bee
 
@@ -29,7 +29,7 @@ class Queen():
         activate_bees = []
 
         for task_uuid in self.activate_bees:
-            if not Task_manager_db().check_is_task_done(task_uuid):
+            if not db().check_is_task_done(task_uuid):
                 activate_bees.append(task_uuid)
 
         self.activate_bees = activate_bees
