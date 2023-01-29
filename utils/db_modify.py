@@ -1,5 +1,10 @@
-from db_access import db_access
+from db_access import db
+import inspect
+from time import sleep
+from utils.db_access import Task_manager_db
+from uuid import UUID
 import logging
+from utils.utils import get_current_time_str
 
 logging.basicConfig(filename='db.log', encoding='utf-8', level=logging.DEBUG)
 
@@ -21,7 +26,7 @@ def update_history(self,task_uuid: UUID, most_recent_call_function_name: str) ->
     return
 def check_is_task_done(self,task_uuid: UUID) -> bool:
     return
-def get_task_by_uuid(self,task_uuid) -> Any:
+def get_task_by_uuid(self,task_uuid) -> any:
     query = f"SELECT * FROM tasks WHERE task_uuid = %s;"
     
     task_info = self.fetch(query,(task_uuid,),fetch_all=True)
@@ -32,7 +37,7 @@ def get_task_by_uuid(self,task_uuid) -> Any:
 # Initial.py related functions
 def create_tasks_table(self):
     query = "CREATE TABLE IF NOT EXISTS tasks(task_uuid uuid PRIMARY KEY, function TEXT, argument TEXT, status TEXT, start_time TEXT,expire_time TEXT,remaining_attempts int, failure_attempt_policy INT[], success_attempt_policy INT[], last_attempt_time TEXT,heartbeat TEXT, create_time TEXT, finished_time TEXT, cancel_signal bool, pause_signal bool);"
-    if db_access().execute(query) != True :
+    if db().execute(query) != True :
         logging.warning('db initialization failed')
         exit()
     print('db initialization failed')
