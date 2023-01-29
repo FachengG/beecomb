@@ -11,8 +11,8 @@ jobs:
         image: postgis/postgis:10-2.5
         env:
           # must specify password for PG Docker container image, see: https://registry.hub.docker.com/_/postgres?tab=description&page=1&name=10
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
+          POSTGRES_USER: pi
+          POSTGRES_PASSWORD: pi
           POSTGRES_DB: test_task_manager
         ports:
           - 5432:5432
@@ -34,11 +34,10 @@ jobs:
 
       - name: Build postgres tables and users
         run: |
-          psql -h localhost -U postgres "CREATE USER pi WITH PASSWORD 'pi';"
-          psql -h localhost -U postgres "CREATE DATABASE test_task_manager;"
-          psql -h localhost -U postgres "GRANT ALL on test_task_manager to pi;"
+          psql -U pi "CREATE TABLE test;"
+          psql -U pi "DROP TABLE test;"
         env:
-          PGPASSWORD: password
+          PGPASSWORD: pi
 
       - name: Test with pytest
         run: |
