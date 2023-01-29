@@ -1,4 +1,4 @@
-from ..db_access import db
+from db_access import db
 
 
 def test_db_functions():
