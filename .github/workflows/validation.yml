@@ -1,9 +1,9 @@
-name: Functions Tests
+name: validation with pytest & lint
 
 on: [push]
 
 jobs:
-  pytest_workflow:
+  validation_workflow:
     runs-on: ubuntu-latest
 
     services:
