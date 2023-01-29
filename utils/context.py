@@ -1,6 +1,6 @@
 import inspect
 from time import sleep
-from db_access import db
+from utils.db_access import db
 from uuid import UUID
 
 

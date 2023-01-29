@@ -2,7 +2,7 @@ from typing import Any, List, Tuple
 import psycopg
 from uuid import UUID, uuid4
 import logging
-from utils import get_current_time_str
+from utils.utils import get_current_time_str
 
 
 logging.basicConfig(filename='../log/db.log')

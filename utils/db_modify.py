@@ -1,7 +1,7 @@
-from db_access import db
+from utils.db_access import db
 from uuid import UUID
 import logging
-from utils import get_current_time_str
+from utils.utils import get_current_time_str
 
 logging.basicConfig(filename='db.log', encoding='utf-8', level=logging.DEBUG)
 
