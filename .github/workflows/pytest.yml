@@ -34,9 +34,9 @@ jobs:
 
       - name: Build postgres tables and users
         run: |
-          psql -h postgres -U "CREATE USER pi WITH PASSWORD 'pi';"
-          psql -h postgres -U "CREATE DATABASE test_task_manager;"
-          psql -h postgres -U "GRANT ALL on test_task_manager to pi;"
+          psql -h localhost -U postgres "CREATE USER pi WITH PASSWORD 'pi';"
+          psql -h localhost -U postgres "CREATE DATABASE test_task_manager;"
+          psql -h localhost -U postgres "GRANT ALL on test_task_manager to pi;"
         env:
           PGPASSWORD: password
 
