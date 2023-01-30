@@ -1,12 +1,12 @@
 import inspect
 from time import sleep
-from utils.db_access import Task_manager_db
+from utils.db_access import Db
 from uuid import UUID
 
 
 class Context:
     def __init__(self, task_uuid: UUID) -> None:
-        self.db = Task_manager_db()
+        self.db = Db()
         self.task_uuid = task_uuid
 
     def __call__(self):
@@ -19,21 +19,25 @@ class Context:
 
     def check_pause_signal(self):
         pause_flag = True
-        while self.db.get_pause_status(self.task_uuid):
+        while self.db.check_pause_status(self.task_uuid) in ('pausing','paused'):
             if pause_flag:
-                self.db.set_task_status_to_pause(self.task_uuid)
+                self.db.set_task_status(self.task_uuid,'paused')
                 pause_flag = False
-            sleep(10)
+            sleep(5)
+        self.db.set_task_status(self.task_uuid,'resumed')
+
 
     def check_cancel_signal(self):
-        if self.db.get_cancel_signal(self.task_uuid):
-            self.db.set_task_status_to_canceled(self.task_uuid)
+        most_recent_status = self.db.get_task_status(self.task_uuid)
+        if self.db.check_cancel_status(self.task_uuid):
+            self.db.set_task_status(self.task_uuid,'canceled')
             try:
                 exit()
             except:
-                self.db.set_task_status_to_running(self.task_uuid)
+                self.db.set_task_status(self.task_uuid,most_recent_status)
 
-    # TODO: change job status to finished
-    # This function is added to the script's end.
-    def end(self):
+    def task_finished(self):
+        self.db.set_task_status(self.task_uuid,"finished")
         return
+
+    # DB: check_cancel_status, set_task_status, check_pause_status, get_task_status, update_heartbeat, update_history
