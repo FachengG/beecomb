@@ -1,8 +1,6 @@
-from typing import Any, List, Tuple
+from typing import Tuple
 import psycopg
-from uuid import UUID, uuid4
 import logging
-from utils.utils import get_current_time_str
 
 
 logging.basicConfig(filename='../log/db.log')
