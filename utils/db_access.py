@@ -7,7 +7,7 @@ from utils.utils import get_current_time_str
 
 logging.basicConfig(filename='../log/db.log')
 
-class db():
+class Db():
     def __init__(self) -> None:
         self.db_access = None
         pass
