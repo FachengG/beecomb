@@ -33,13 +33,13 @@ class Db():
                                          port='5432')
         else:
             connection = psycopg.connect(dbname="task_manager",
-                                        user='pi',
-                                        password='pi',
-                                        host='localhost',
-                                        port='5432')
+                                         user='pi',
+                                         password='pi',
+                                         host='localhost',
+                                         port='5432')
         return connection
 
-    def execute(self, query: str, values: Tuple = ()) -> None:
+    def execute(self, query: str, values: Tuple = ()) -> bool:
         conn = self.connection()
         cursor = conn.cursor()
         try:
@@ -47,12 +47,13 @@ class Db():
         except:
             logging.warning(
                 f"db execute query: '{query}' with values: '{values}' failed")
+            return False
         finally:
             conn.commit()
             conn.close()
         return True
 
-    def fetch(self, query: str, values: Tuple = (), fetch_one: bool = False, fetch_many: bool = False, fetch_all: bool = False) -> None:
+    def fetch(self, query: str, values: Tuple = (), fetch_one: bool = False, fetch_many: bool = False, fetch_all: bool = False) -> Tuple(bool, any):
         conn = self.connection()
         cursor = conn.cursor()
         cursor.execute(query, values)
@@ -62,27 +63,34 @@ class Db():
             except:
                 logging.warning(
                     f"db fetch one query: '{query}' with values: '{values}' failed")
+                return (False, None)
             finally:
                 conn.commit()
                 conn.close()
+
         elif fetch_many:
             try:
                 fetched_data = cursor.fetchmany()
             except:
                 logging.warning(
                     f"db fetch many query: '{query}' with values: '{values}' failed")
+                return (False, None)
             finally:
                 conn.commit()
                 conn.close()
+
         elif fetch_all:
             try:
                 fetched_data = cursor.fetchall()
             except:
                 logging.warning(
                     f"db fetch all query: '{query}' with values: '{values}' failed")
+                return (False, None)
             finally:
                 conn.commit()
                 conn.close()
+
         else:
             raise TypeError("no fetch type was defined")
-        return fetched_data
+
+        return (True, fetched_data)
