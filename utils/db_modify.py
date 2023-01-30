@@ -1,12 +1,10 @@
-from db_access import Db
+from utils.db_access import Db
 from uuid import UUID
 import logging
 from utils.utils import get_current_time_str
 
 logging.basicConfig(filename='db.log', encoding='utf-8', level=logging.DEBUG)
 
-# Context.py related functions
-# TODO:
 def get_pause_status(self,task_uuid: UUID) -> bool:
     return
 
@@ -39,5 +37,3 @@ def create_tasks_table(self):
         exit()
     print('db initialization failed')
     exit()
-
-
