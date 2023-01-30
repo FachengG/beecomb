@@ -47,8 +47,9 @@ class Db():
         except:
             logging.warning(
                 f"db execute query: '{query}' with values: '{values}' failed")
-        conn.commit()
-        conn.close()
+        finally:
+            conn.commit()
+            conn.close()
         return True
 
     def fetch(self, query: str, values: Tuple = (), fetch_one: bool = False, fetch_many: bool = False, fetch_all: bool = False) -> None:
@@ -61,21 +62,27 @@ class Db():
             except:
                 logging.warning(
                     f"db fetch one query: '{query}' with values: '{values}' failed")
+            finally:
+                conn.commit()
+                conn.close()
         elif fetch_many:
             try:
                 fetched_data = cursor.fetchmany()
             except:
                 logging.warning(
                     f"db fetch many query: '{query}' with values: '{values}' failed")
+            finally:
+                conn.commit()
+                conn.close()
         elif fetch_all:
             try:
                 fetched_data = cursor.fetchall()
             except:
                 logging.warning(
                     f"db fetch all query: '{query}' with values: '{values}' failed")
+            finally:
+                conn.commit()
+                conn.close()
         else:
             raise TypeError("no fetch type was defined")
-        conn.commit()
-        conn.close()
-
         return fetched_data
