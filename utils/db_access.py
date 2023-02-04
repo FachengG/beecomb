@@ -8,6 +8,7 @@ logging.basicConfig(filename='../log/db.log')
 
 class Db():
     def __init__(self) -> None:
+        self.class_name = "Db"
         self.db_connection = None
         pass
 
@@ -36,7 +37,7 @@ class Db():
             cursor.execute(query, values)
         except:
             logging.warning(
-                f"db execute query: '{query}' with values: '{values}' failed")
+                f"{self.class_name} execute query: '{query}' with values: '{values}' failed")
             return False
         finally:
             conn.commit()
@@ -52,7 +53,7 @@ class Db():
                 fetched_data = cursor.fetchone()
             except:
                 logging.warning(
-                    f"db fetch one query: '{query}' with values: '{values}' failed")
+                    f"{self.class_name} fetch one query: '{query}' with values: '{values}' failed")
                 return (False, None)
             finally:
                 conn.commit()
@@ -63,7 +64,7 @@ class Db():
                 fetched_data = cursor.fetchmany()
             except:
                 logging.warning(
-                    f"db fetch many query: '{query}' with values: '{values}' failed")
+                    f"{self.class_name} fetch many query: '{query}' with values: '{values}' failed")
                 return (False, None)
             finally:
                 conn.commit()
@@ -74,7 +75,7 @@ class Db():
                 fetched_data = cursor.fetchall()
             except:
                 logging.warning(
-                    f"db fetch all query: '{query}' with values: '{values}' failed")
+                    f"{self.class_name} fetch all query: '{query}' with values: '{values}' failed")
                 return (False, None)
             finally:
                 conn.commit()
@@ -89,6 +90,7 @@ class Db():
 class CoefficientTurningDb(Db):
     def __init__(self):
         super().__init__(self)
+        self.class_name = "CoefficientTurningDb"
 
     def connection(self) -> psycopg.connect:
         connection = psycopg.connect(dbname="coefficient_turning",
@@ -106,6 +108,7 @@ class CoefficientTurningDb(Db):
 class TestDb(Db):
     def __init__(self):
         super().__init__(self)
+        self.class_name = "TestDb"
 
     def connection(self) -> psycopg.connect:
         connection = psycopg.connect(dbname="test_task_manager",
@@ -119,6 +122,7 @@ class TestDb(Db):
 class TestCoefficientTurningDb(Db):
     def __init__(self):
         super().__init__(self)
+        self.class_name = "TestCoefficientTurningDb"
 
     def connection(self) -> psycopg.connect:
         connection = psycopg.connect(dbname="test_coefficient_turning",
