@@ -23,10 +23,10 @@ class Db():
 
     def connection(self) -> psycopg.connect:
         connection = psycopg.connect(dbname="task_manager",
-                                         user='pi',
-                                         password='pi',
-                                         host='localhost',
-                                         port='5432')
+                                     user='pi',
+                                     password='pi',
+                                     host='localhost',
+                                     port='5432')
         return connection
 
     def execute(self, query: str, values: Tuple = ()) -> bool:
@@ -85,6 +85,7 @@ class Db():
 
         return (True, fetched_data)
 
+
 class CoefficientTurningDb(Db):
     def __init__(self):
         super().__init__(self)
@@ -98,10 +99,12 @@ class CoefficientTurningDb(Db):
         return connection
 
 # Test Section #
+
+
 class TestDb(Db):
     def __init__(self):
         super().__init__(self)
-    
+
     def connection(self) -> psycopg.connect:
         connection = psycopg.connect(dbname="test_task_manager",
                                      user='pi',
@@ -109,6 +112,7 @@ class TestDb(Db):
                                      host='localhost',
                                      port='5432')
         return connection
+
 
 class TestCoefficientTurningDb(Db):
     def __init__(self):
