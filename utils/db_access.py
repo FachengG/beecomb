@@ -29,7 +29,7 @@ class Db():
                                      port='5432')
         return connection
 
-    def execute(self, query: str, values: tuple = ()) -> bool:
+    def execute(self, query: str, values: tuple = tuple())-> bool:
         conn = self.connection()
         cursor = conn.cursor()
         try:
@@ -43,7 +43,7 @@ class Db():
             conn.close()
         return True
 
-    def fetch(self, query: str, values: tuple = (), fetch_one: bool = False, fetch_many: bool = False, fetch_all: bool = False) -> tuple(bool, any):
+    def fetch(self, query: str, values: tuple = tuple(), fetch_one: bool = False, fetch_many: bool = False, fetch_all: bool = False) -> tuple([bool, any]):
         conn = self.connection()
         cursor = conn.cursor()
         cursor.execute(query, values)
@@ -88,9 +88,8 @@ class Db():
 
 class CoefficientTurningDb(Db):
     def __init__(self):
-        super().__init__(self)
         self.class_name = "CoefficientTurningDb"
-
+    
     def connection(self) -> psycopg.connect:
         connection = psycopg.connect(dbname="coefficient_turning",
                                      user='pi',
@@ -106,7 +105,6 @@ class CoefficientTurningDb(Db):
 
 class TestDb(Db):
     def __init__(self):
-        super().__init__(self)
         self.class_name = "TestDb"
 
     def connection(self) -> psycopg.connect:
@@ -120,7 +118,6 @@ class TestDb(Db):
 
 class TestCoefficientTurningDb(Db):
     def __init__(self):
-        super().__init__(self)
         self.class_name = "TestCoefficientTurningDb"
 
     def connection(self) -> psycopg.connect:
@@ -130,3 +127,4 @@ class TestCoefficientTurningDb(Db):
                                      host='localhost',
                                      port='5432')
         return connection
+
