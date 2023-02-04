@@ -98,8 +98,10 @@ class CoefficientTurningDb(Db):
                                      port='5432')
         return connection
 
-# Test Section #
 
+#
+# Test Section
+#
 
 class TestDb(Db):
     def __init__(self):
