@@ -7,9 +7,8 @@ logging.basicConfig(filename='../log/db.log')
 
 
 class Db():
-    def __init__(self, test: bool = False) -> None:
+    def __init__(self) -> None:
         self.db_connection = None
-        self.test = test
         pass
 
     def __enter__(self) -> psycopg.connect:
@@ -23,14 +22,7 @@ class Db():
             self.db_connection = None
 
     def connection(self) -> psycopg.connect:
-        if self.test:
-            connection = psycopg.connect(dbname="test_task_manager",
-                                         user='pi',
-                                         password='pi',
-                                         host='localhost',
-                                         port='5432')
-        else:
-            connection = psycopg.connect(dbname="task_manager",
+        connection = psycopg.connect(dbname="task_manager",
                                          user='pi',
                                          password='pi',
                                          host='localhost',
@@ -92,3 +84,40 @@ class Db():
             raise TypeError("no fetch type was defined")
 
         return (True, fetched_data)
+
+class CoefficientTurningDb(Db):
+    def __init__(self):
+        super().__init__(self)
+
+    def connection(self) -> psycopg.connect:
+        connection = psycopg.connect(dbname="coefficient_turning",
+                                     user='pi',
+                                     password='pi',
+                                     host='localhost',
+                                     port='5432')
+        return connection
+
+# Test Section #
+class TestDb(Db):
+    def __init__(self):
+        super().__init__(self)
+    
+    def connection(self) -> psycopg.connect:
+        connection = psycopg.connect(dbname="test_task_manager",
+                                     user='pi',
+                                     password='pi',
+                                     host='localhost',
+                                     port='5432')
+        return connection
+
+class TestCoefficientTurningDb(Db):
+    def __init__(self):
+        super().__init__(self)
+
+    def connection(self) -> psycopg.connect:
+        connection = psycopg.connect(dbname="test_coefficient_turning",
+                                     user='pi',
+                                     password='pi',
+                                     host='localhost',
+                                     port='5432')
+        return connection
