@@ -1,10 +1,10 @@
 from hashlib import new
-from time import sleep
+from time import sleep, time
 from typing import NoReturn
 from utils.db_access import Db
 from uuid import uuid4
 from bee import Bee
-
+from utils.coefficient_turning import update_coefficient
 
 class Queen():
     def __init__(self, max_bee_num: int, test_env: bool = False, bee_wait_for_job_time_constant: float = 1, queen_remove_finished_bee_time_constant: float = 1) -> None:
@@ -16,12 +16,20 @@ class Queen():
         self.max_activate_bees = max_bee_num
 
     def work(self) -> NoReturn:
-        self.update_activate_bee_list()
         while True:
+
             while len(self.activate_bees_set) <= self.max_activate_bees:
                 self.generate_new_bee()
-            while self.remove_finished_bee() == 0:
+
+            start_time = time.time()
+            while self.remove_finished_bee() == []:
                 sleep(self.queen_remove_finished_bee_time_constant)
+            end_time = time.time()
+            diff_time = end_time - start_time
+
+            update_coefficient = ()
+
+            
             Db(self.test_env).(self.queen_uuid, "running")
 
     def generate_new_bee(self) -> None:
@@ -33,10 +41,10 @@ class Queen():
         del new_bee
         return
 
-    def remove_finished_bee(self):
-        removed_bee_count = 0
+    def remove_finished_bee(self) -> set:
+        removed_bees = set([])
         for activate_bee_uuid in self.activate_bees_set:
             if Db(self.test_env).get_task_status(activate_bee_uuid) in ('Finished'):
                 self.activate_bees_set.remove(activate_bee_uuid)
-                removed_bee_count += 1
-        return removed_bee_count
+                removed_bees.append(activate_bee_uuid)
+        return activate_bee_uuid
