@@ -1,4 +1,3 @@
-from typing import Tuple
 import psycopg
 import logging
 
@@ -30,7 +29,7 @@ class Db():
                                      port='5432')
         return connection
 
-    def execute(self, query: str, values: Tuple = ()) -> bool:
+    def execute(self, query: str, values: tuple = ()) -> bool:
         conn = self.connection()
         cursor = conn.cursor()
         try:
@@ -44,7 +43,7 @@ class Db():
             conn.close()
         return True
 
-    def fetch(self, query: str, values: Tuple = (), fetch_one: bool = False, fetch_many: bool = False, fetch_all: bool = False) -> Tuple(bool, any):
+    def fetch(self, query: str, values: tuple = (), fetch_one: bool = False, fetch_many: bool = False, fetch_all: bool = False) -> tuple(bool, any):
         conn = self.connection()
         cursor = conn.cursor()
         cursor.execute(query, values)
