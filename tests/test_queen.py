@@ -1,2 +1,2 @@
-def test_queen():
-    assert 1 == 1
+def test_1_and_1():
+    assert 1 is 1

@@ -12,6 +12,9 @@ class Test_db_functions:
 class Test_clean_up:
     db = TestDb()
 
-    def cleanup(db):
+    def test_cleanup(db):
         for query in drop_all_tables():
             db.execute(query)
+        assert 1 == 1
+
+    print("yes")

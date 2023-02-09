@@ -1,6 +1,9 @@
 from pypika import Query, Table, Column, terms, queries
 
 
+#
+# Decorator
+#
 def query_to_string(func) -> str:
     def wrapper(*args, **kwargs):
         if type(func(*args, **kwargs)) is list:
@@ -20,14 +23,9 @@ def use_tasks_table(func) -> None:
     return wrapper
 
 
-@use_tasks_table
-def create_task() -> queries.CreateQueryBuilder:
-    print(create_task.table)
-
-
-create_task()
-
-
+#
+# Queries
+#
 @query_to_string
 def create_tasks_table_query() -> queries.CreateQueryBuilder:
     tasks_table_query = (
