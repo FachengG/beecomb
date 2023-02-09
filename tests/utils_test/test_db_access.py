@@ -1,6 +1,6 @@
 from utils.db_access import TestDb
 from utils.initial import Set_up
-from utils.query import drop_all_tables
+from utils.query import drop_tasks_table_and_query_table_query
 
 
 class Test_db_functions:
@@ -12,9 +12,7 @@ class Test_db_functions:
 class Test_clean_up:
     db = TestDb()
 
-    def test_cleanup(db):
-        for query in drop_all_tables():
-            db.execute(query)
+    def test_cleanup(self):
+        for query in drop_tasks_table_and_query_table_query():
+            self.db.execute(query)
         assert 1 == 1
-
-    print("yes")

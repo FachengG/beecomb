@@ -30,19 +30,11 @@ class db_modify:
     def update_heartbeat(self, task_uuid: UUID) -> bool:
         tasks_table = Table("tasks")
         cur_time_str = get_current_time_str()
-        query = (
-            Query.update(tasks_table)
-            .set(tasks_table.heartbeat, cur_time_str)
-            .where(tasks_table.uuid == task_uuid)
-        )
+        query = Query.update(tasks_table).set(tasks_table.heartbeat, cur_time_str).where(tasks_table.uuid == task_uuid)
         if not self.db.execute(query):
-            logging.warning(
-                f" task uuid: {task_uuid} failed to update heartbeat at {cur_time_str}"
-            )
+            logging.warning(f" task uuid: {task_uuid} failed to update heartbeat at {cur_time_str}")
 
-    def update_history(
-        self, task_uuid: UUID, most_recent_call_function_name: str
-    ) -> bool:
+    def update_history(self, task_uuid: UUID, most_recent_call_function_name: str) -> bool:
         return
 
     def check_is_task_done(self, task_uuid: UUID) -> bool:

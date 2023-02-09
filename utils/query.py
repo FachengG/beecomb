@@ -55,7 +55,7 @@ def create_tasks_table_query() -> queries.CreateQueryBuilder:
 @query_to_string
 def create_signal_table_query() -> queries.CreateQueryBuilder:
     signal_table_query = (
-        Query.create_table("tasks")
+        Query.create_table("signal")
         .columns(
             Column("task_uuid", "UUID", nullable=False),
             Column("cancel_signal", "bool"),
@@ -68,7 +68,7 @@ def create_signal_table_query() -> queries.CreateQueryBuilder:
 
 
 @query_to_string
-def drop_all_tables() -> list[queries.CreateQueryBuilder]:
+def drop_tasks_table_and_query_table_query() -> list[queries.CreateQueryBuilder]:
     drop_all_tables_query = [
         Query.drop_table("tasks"),
         Query.drop_table("signal"),

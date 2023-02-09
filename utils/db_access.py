@@ -1,7 +1,6 @@
 import psycopg
 import logging
 
-
 logging.basicConfig(filename="../log/db.log")
 
 
@@ -23,7 +22,11 @@ class Db:
 
     def connection(self) -> psycopg.connect:
         connection = psycopg.connect(
-            dbname="master", user="pi", password="pi", host="localhost", port="5432"
+            dbname="master",
+            user="pi",
+            password="pi",
+            host="localhost",
+            port="5432",
         )
         return connection
 
@@ -33,14 +36,21 @@ class Db:
         try:
             cursor.execute(query, values)
         except:
-            logging.warning(
-                f"{self.database_name} execute query: '{query}' with values: '{values}' failed"
-            )
+            logging.warning(f"{self.database_name} execute query: '{query}' with values: '{values}' failed")
             return False
         finally:
             conn.commit()
             conn.close()
         return True
+
+    def execute_many(self, queries_and_values: list((str, tuple))) -> bool:
+        execute_result = True
+        for query_and_values in queries_and_values:
+            if len(query_and_values) == 1:
+                execute_result = self.execute(query_and_values[0]) and execute_result
+            if len(query_and_values) == 2:
+                execute_result = self.execute(query_and_values[0], query_and_values[1]) and execute_result
+        return execute_result
 
     def fetch(
         self,
@@ -57,9 +67,7 @@ class Db:
             try:
                 fetched_data = cursor.fetchone()
             except:
-                logging.warning(
-                    f"{self.database_name} fetch one query: '{query}' with values: '{values}' failed"
-                )
+                logging.warning(f"{self.database_name} fetch one query: '{query}' with values: '{values}' failed")
                 return (False, None)
             finally:
                 conn.commit()
@@ -69,9 +77,7 @@ class Db:
             try:
                 fetched_data = cursor.fetchmany()
             except:
-                logging.warning(
-                    f"{self.database_name} fetch many query: '{query}' with values: '{values}' failed"
-                )
+                logging.warning(f"{self.database_name} fetch many query: '{query}' with values: '{values}' failed")
                 return (False, None)
             finally:
                 conn.commit()
@@ -81,9 +87,7 @@ class Db:
             try:
                 fetched_data = cursor.fetchall()
             except:
-                logging.warning(
-                    f"{self.database_name} fetch all query: '{query}' with values: '{values}' failed"
-                )
+                logging.warning(f"{self.database_name} fetch all query: '{query}' with values: '{values}' failed")
                 return (False, None)
             finally:
                 conn.commit()
@@ -108,6 +112,10 @@ class TestDb(Db):
 
     def connection(self) -> psycopg.connect:
         connection = psycopg.connect(
-            dbname="test", user="pi", password="pi", host="localhost", port="5432"
+            dbname="test",
+            user="pi",
+            password="pi",
+            host="localhost",
+            port="5432",
         )
         return connection
