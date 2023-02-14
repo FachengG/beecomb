@@ -17,7 +17,7 @@ class Task:
         self.task_properties_updated = {}
         pass
 
-    def label_property_not_updated(self, func: function):
+    def label_property_not_updated(self, func):
         ready_property = set([])
         for property in self.task_details.keys():
             ready_property.add(property)

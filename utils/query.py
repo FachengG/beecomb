@@ -1,11 +1,11 @@
-from uuid import UUID,uuid4
+from uuid import UUID, uuid4
 from pypika import Query, Table, Column, terms, queries
-from utils.utils import Search_dict_key
+
 
 #
 # Decorator
 #
-def query_to_string(func) -> str | list(str):
+def query_to_string(func) -> list[str] | str:
     def wrapper(*args, **kwargs):
         if type(func(*args, **kwargs)) is list:
             return [str(q) + ";" for q in func(*args, **kwargs)]
@@ -70,12 +70,5 @@ def drop_tasks_table_and_query_table_query() -> list[queries.CreateQueryBuilder]
 @query_to_string
 def create_new_task(task_detail_dict: dict) -> UUID:
     tasks_table = Table("tasks")
-    task_detail_dict_obj = Search_dict_key(task_detail_dict)
-    task_id = task_detail_dict_obj.search_dict_key("task_id")
-    task_function = task_detail_dict.get("task_function")
-    task_detail_dict.get("task_function")
-            Column("failure_attempt_policy", "INT[]"),
-            Column("success_attempt_policy", "INT[]"),
 
-
-    return drop_all_tables_query
+    return
