@@ -7,6 +7,9 @@ from bee import Bee
 from utils.coefficient_turning import update_coefficient
 
 class Queen():
+    """
+    control multiple bee worker
+    """
     def __init__(self, max_bee_num: int, test_env: bool = False, bee_wait_for_job_time_constant: float = 1, queen_remove_finished_bee_time_constant: float = 1) -> None:
         self.test_env = test_env
         self.bee_wait_for_job_time_constant = bee_wait_for_job_time_constant

@@ -13,7 +13,7 @@ jobs:
           # must specify password for PG Docker container image, see: https://registry.hub.docker.com/_/postgres?tab=description&page=1&name=10
           POSTGRES_USER: pi
           POSTGRES_PASSWORD: pi
-          POSTGRES_DB: test_task_manager
+          POSTGRES_DB: test
         ports:
           - 5432:5432
         # needed because the postgres container does not provide a healthcheck

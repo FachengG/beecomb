@@ -19,25 +19,24 @@ class Context:
 
     def check_pause_signal(self):
         pause_flag = True
-        while self.db.check_pause_status(self.task_uuid) in ('pausing','paused'):
+        while self.db.check_pause_status(self.task_uuid) in ("pausing", "paused"):
             if pause_flag:
-                self.db.set_task_status(self.task_uuid,'paused')
+                self.db.set_task_status(self.task_uuid, "paused")
                 pause_flag = False
             sleep(5)
-        self.db.set_task_status(self.task_uuid,'resumed')
-
+        self.db.set_task_status(self.task_uuid, "resumed")
 
     def check_cancel_signal(self):
         most_recent_status = self.db.get_task_status(self.task_uuid)
         if self.db.check_cancel_status(self.task_uuid):
-            self.db.set_task_status(self.task_uuid,'canceled')
+            self.db.set_task_status(self.task_uuid, "canceled")
             try:
                 exit()
             except:
-                self.db.set_task_status(self.task_uuid,most_recent_status)
+                self.db.set_task_status(self.task_uuid, most_recent_status)
 
     def task_finished(self):
-        self.db.set_task_status(self.task_uuid,"finished")
+        self.db.set_task_status(self.task_uuid, "finished")
         return
 
     # DB: check_cancel_status, set_task_status, check_pause_status, get_task_status, update_heartbeat, update_history

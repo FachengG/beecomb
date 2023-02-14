@@ -1,13 +1,12 @@
 import psycopg
 import logging
 
+logging.basicConfig(filename="../log/db.log")
 
-logging.basicConfig(filename='../log/db.log')
 
-
-class Db():
+class Db:
     def __init__(self) -> None:
-        self.class_name = "Db"
+        self.database_name = "Db"
         self.db_connection = None
         pass
 
@@ -22,28 +21,45 @@ class Db():
             self.db_connection = None
 
     def connection(self) -> psycopg.connect:
-        connection = psycopg.connect(dbname="task_manager",
-                                     user='pi',
-                                     password='pi',
-                                     host='localhost',
-                                     port='5432')
+        connection = psycopg.connect(
+            dbname="master",
+            user="pi",
+            password="pi",
+            host="localhost",
+            port="5432",
+        )
         return connection
 
-    def execute(self, query: str, values: tuple = tuple())-> bool:
+    def execute(self, query: str, values: tuple = tuple()) -> bool:
         conn = self.connection()
         cursor = conn.cursor()
         try:
             cursor.execute(query, values)
         except:
-            logging.warning(
-                f"{self.class_name} execute query: '{query}' with values: '{values}' failed")
+            logging.warning(f"{self.database_name} execute query: '{query}' with values: '{values}' failed")
             return False
         finally:
             conn.commit()
             conn.close()
         return True
 
-    def fetch(self, query: str, values: tuple = tuple(), fetch_one: bool = False, fetch_many: bool = False, fetch_all: bool = False) -> tuple([bool, any]):
+    def execute_many(self, queries_and_values: list((str, tuple))) -> bool:
+        execute_result = True
+        for query_and_values in queries_and_values:
+            if len(query_and_values) == 1:
+                execute_result = self.execute(query_and_values[0]) and execute_result
+            if len(query_and_values) == 2:
+                execute_result = self.execute(query_and_values[0], query_and_values[1]) and execute_result
+        return execute_result
+
+    def fetch(
+        self,
+        query: str,
+        values: tuple = tuple(),
+        fetch_one: bool = False,
+        fetch_many: bool = False,
+        fetch_all: bool = False,
+    ) -> tuple([bool, any]):
         conn = self.connection()
         cursor = conn.cursor()
         cursor.execute(query, values)
@@ -51,8 +67,7 @@ class Db():
             try:
                 fetched_data = cursor.fetchone()
             except:
-                logging.warning(
-                    f"{self.class_name} fetch one query: '{query}' with values: '{values}' failed")
+                logging.warning(f"{self.database_name} fetch one query: '{query}' with values: '{values}' failed")
                 return (False, None)
             finally:
                 conn.commit()
@@ -62,8 +77,7 @@ class Db():
             try:
                 fetched_data = cursor.fetchmany()
             except:
-                logging.warning(
-                    f"{self.class_name} fetch many query: '{query}' with values: '{values}' failed")
+                logging.warning(f"{self.database_name} fetch many query: '{query}' with values: '{values}' failed")
                 return (False, None)
             finally:
                 conn.commit()
@@ -73,8 +87,7 @@ class Db():
             try:
                 fetched_data = cursor.fetchall()
             except:
-                logging.warning(
-                    f"{self.class_name} fetch all query: '{query}' with values: '{values}' failed")
+                logging.warning(f"{self.database_name} fetch all query: '{query}' with values: '{values}' failed")
                 return (False, None)
             finally:
                 conn.commit()
@@ -86,45 +99,23 @@ class Db():
         return (True, fetched_data)
 
 
-class CoefficientTurningDb(Db):
-    def __init__(self):
-        self.class_name = "CoefficientTurningDb"
-    
-    def connection(self) -> psycopg.connect:
-        connection = psycopg.connect(dbname="coefficient_turning",
-                                     user='pi',
-                                     password='pi',
-                                     host='localhost',
-                                     port='5432')
-        return connection
-
-
 #
 # Test Section
 #
 
+
 class TestDb(Db):
+    __test__ = False
+
     def __init__(self):
-        self.class_name = "TestDb"
+        self.database_name = "TestDb"
 
     def connection(self) -> psycopg.connect:
-        connection = psycopg.connect(dbname="test_task_manager",
-                                     user='pi',
-                                     password='pi',
-                                     host='localhost',
-                                     port='5432')
+        connection = psycopg.connect(
+            dbname="test",
+            user="pi",
+            password="pi",
+            host="localhost",
+            port="5432",
+        )
         return connection
-
-
-class TestCoefficientTurningDb(Db):
-    def __init__(self):
-        self.class_name = "TestCoefficientTurningDb"
-
-    def connection(self) -> psycopg.connect:
-        connection = psycopg.connect(dbname="test_coefficient_turning",
-                                     user='pi',
-                                     password='pi',
-                                     host='localhost',
-                                     port='5432')
-        return connection
-
