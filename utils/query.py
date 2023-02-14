@@ -1,25 +1,16 @@
+from uuid import UUID,uuid4
 from pypika import Query, Table, Column, terms, queries
-
+from utils.utils import Search_dict_key
 
 #
 # Decorator
 #
-def query_to_string(func) -> str:
+def query_to_string(func) -> str | list(str):
     def wrapper(*args, **kwargs):
         if type(func(*args, **kwargs)) is list:
             return [str(q) + ";" for q in func(*args, **kwargs)]
         return str(func(*args, **kwargs)) + ";"
 
-    return wrapper
-
-
-def use_tasks_table(func) -> None:
-    tasks_table = Table("tasks")
-
-    def wrapper(*args, **kwargs):
-        return func(*args, **kwargs)
-
-    wrapper.table = tasks_table
     return wrapper
 
 
@@ -31,9 +22,9 @@ def create_tasks_table_query() -> queries.CreateQueryBuilder:
     tasks_table_query = (
         Query.create_table("tasks")
         .columns(
-            Column("task_uuid", "UUID", nullable=False),
+            Column("task_uuid", "TEXT", nullable=False),
             Column("function", "TEXT", nullable=False),
-            Column("argument", "TEXT", nullable=False, default=terms.ValueWrapper("")),
+            Column("argument", "TEXT"),
             Column("status", "TEXT", nullable=False),
             Column("start_time", "TEXT"),
             Column("expire_time", "TEXT"),
@@ -73,4 +64,18 @@ def drop_tasks_table_and_query_table_query() -> list[queries.CreateQueryBuilder]
         Query.drop_table("tasks"),
         Query.drop_table("signal"),
     ]
+    return drop_all_tables_query
+
+
+@query_to_string
+def create_new_task(task_detail_dict: dict) -> UUID:
+    tasks_table = Table("tasks")
+    task_detail_dict_obj = Search_dict_key(task_detail_dict)
+    task_id = task_detail_dict_obj.search_dict_key("task_id")
+    task_function = task_detail_dict.get("task_function")
+    task_detail_dict.get("task_function")
+            Column("failure_attempt_policy", "INT[]"),
+            Column("success_attempt_policy", "INT[]"),
+
+
     return drop_all_tables_query
