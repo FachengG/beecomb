@@ -1,7 +1,9 @@
 import psycopg
 import logging
+import os
+import utils.utils as utils
 
-logging.basicConfig(filename="../log/db.log")
+logging.basicConfig(filename=utils.utils_abs_log_path_generator("db.log"))
 
 
 class Db:

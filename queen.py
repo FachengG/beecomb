@@ -8,7 +8,7 @@ from utils.coefficient_turning import update_coefficient
 
 class Queen():
     """
-    control multiple bee worker
+    A housekeeper, control multiple bee worker
     """
     def __init__(self, max_bee_num: int, test_env: bool = False, bee_wait_for_job_time_constant: float = 1, queen_remove_finished_bee_time_constant: float = 1) -> None:
         self.test_env = test_env
@@ -51,3 +51,10 @@ class Queen():
                 self.activate_bees_set.remove(activate_bee_uuid)
                 removed_bees.append(activate_bee_uuid)
         return activate_bee_uuid
+
+    def constant_timer(func) -> function:
+        # measure running time
+        def wrapper(*args, **kwargs):
+            return func(*args, **kwargs)
+
+        return wrapper
