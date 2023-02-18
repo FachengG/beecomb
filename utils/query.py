@@ -70,5 +70,6 @@ def drop_tasks_table_and_query_table_query() -> list[queries.CreateQueryBuilder]
 @query_to_string
 def create_new_task(task_detail_dict: dict) -> UUID:
     tasks_table = Table("tasks")
+    create_new_task_query = Query.Table("tasks").insert()
 
     return
