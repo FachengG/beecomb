@@ -1,10 +1,10 @@
 from utils.db_access import Db, TestDb
-from utils.query import create_signal_table_query, create_tasks_table_query
+from utils.query import drop_tasks_table_query, drop_signal_table_query
 import os
 
 
 # initial workflow
-class Set_up:
+class Clean_up:
     def __init__(self):
         self.in_test_environment = "PYTEST_CURRENT_TEST" in os.environ
         if self.in_test_environment:
@@ -12,8 +12,6 @@ class Set_up:
         else:
             self.db = Db()
 
-    def init_db(self) -> bool:
-        signal_table = self.db.execute(create_signal_table_query())
-        tasks_table = self.db.execute(create_tasks_table_query())
-        return True
+    def purge_db(self) -> bool:
+        return self.db.execute_many(drop_tasks_table_query(), drop_signal_table_query())
         #  return signal_table & tasks_table
