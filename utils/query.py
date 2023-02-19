@@ -1,5 +1,6 @@
 from uuid import UUID, uuid4
 from pypika import Query, Table, Column, terms, queries
+from utils.task import Task
 
 
 #
@@ -36,6 +37,7 @@ def create_tasks_table_query() -> queries.CreateQueryBuilder:
             Column("created_time", "TEXT", nullable=False),
             Column("finished_time", "TEXT"),
             Column("function_md5", "UUID NOT NULL", nullable=False),
+            Column("ready", "BOOL", nullable=False, default=False),
         )
         .unique("task_uuid")
         .primary_key("task_uuid")
@@ -59,17 +61,18 @@ def create_signal_table_query() -> queries.CreateQueryBuilder:
 
 
 @query_to_string
-def drop_tasks_table_and_query_table_query() -> list[queries.CreateQueryBuilder]:
-    drop_all_tables_query = [
-        Query.drop_table("tasks"),
-        Query.drop_table("signal"),
-    ]
-    return drop_all_tables_query
+def drop_tasks_table_query() -> queries.CreateQueryBuilder:
+    return Query.drop_table("tasks")
 
 
 @query_to_string
-def create_new_task(task_detail_dict: dict) -> UUID:
-    tasks_table = Table("tasks")
-    create_new_task_query = Query.Table("tasks").insert()
+def drop_signal_table_query() -> queries.CreateQueryBuilder:
+    return Query.drop_table("signal")
 
-    return
+
+@query_to_string
+def create_new_task(task: Task) -> UUID:
+    tasks_table = Table("tasks")
+    tasks_table_query = Query.into(tasks_table)
+
+    return tasks_table_query

@@ -45,13 +45,15 @@ class Db:
             conn.close()
         return True
 
-    def execute_many(self, queries_and_values: list((str, tuple))) -> bool:
+    def execute_many(self, *arg: str | tuple) -> bool:
         execute_result = True
-        for query_and_values in queries_and_values:
-            if len(query_and_values) == 1:
-                execute_result = self.execute(query_and_values[0]) and execute_result
-            if len(query_and_values) == 2:
+        for query_and_values in arg:
+            if type(query_and_values) is str:
+                execute_result = self.execute(query_and_values) and execute_result
+            elif type(query_and_values) is tuple:
                 execute_result = self.execute(query_and_values[0], query_and_values[1]) and execute_result
+            if execute_result == False:
+                return execute_result
         return execute_result
 
     def fetch(
@@ -107,7 +109,7 @@ class Db:
 
 
 class TestDb(Db):
-    __test__ = False
+    __test__ = True
 
     def __init__(self):
         self.database_name = "TestDb"
